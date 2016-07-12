@@ -12,7 +12,7 @@ class settings:
     minNumberEvents = 20000
 
     #user config
-    mail = "" # empty if no mail wished
+    mail = "kiesel@cern.ch" # empty if no mail wished
     pubDir = "/afs/cern.ch/user/k/kiesel/public/manualPCL"
     cmsswBase = "/cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_12"
 
@@ -116,7 +116,7 @@ def getRunToProcess():
     updateRunInfo()
     runInfo = readConfig()
     for run in runInfo.sections():
-        if not runInfo.has_option(run, "status"):
+        if runInfo.get(run, "nevents") > minNumberEvents and runInfo.get(run, "streamdone") and not runInfo.has_option(run, "status"):
             runInfo.set(run, "status", "started")
             break
     writeConfig(runInfo)

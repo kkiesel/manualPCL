@@ -71,7 +71,7 @@ def checkMagneticFieldSetting(run, info):
     bfield = info["magneticfield"]
     if settings.magnetOn and bfield < 3.7 or not settings.magnetOn and bfield > 0.25:
         msg = "\"WARNING: Mismatch between setting of the magnetic field ({}) and the actual field in this run ({})\"".format("on" if settings.magnetOn else "off", bfield)
-        print msg
+        log(msg)
         if settings.mail:
             sendMail(settings.mail, "WARNING: Wrong magnetic field settings in alignment", msg)
 
@@ -218,8 +218,9 @@ def cleanUp(run):
     os.system("rm -r Results{0}".format(run))
 
 if __name__ == "__main__":
-    log('Start new job')
+    log("Start new job")
     run, info = getRunToProcess()
+    log("Run to process: {}".format(run))
     checkMagneticFieldSetting(run, info)
 
     directory = "Results" + run

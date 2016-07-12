@@ -265,7 +265,7 @@ process.TrackRefitter2 = process.TrackRefitter1.clone(
 process.source = cms.Source("PoolSource",
     skipEvents = cms.untracked.uint32(0),
     fileNames = cms.untracked.vstring(
-            ${input},
+            [${input}],
     ),
     # Wait till Strip Tracker Power Supplies provide nominal high voltages at the beginning of a fill
     lumisToSkip = cms.untracked.VLuminosityBlockRange('${run}:1-${run}:20'),

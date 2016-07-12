@@ -279,7 +279,7 @@ process.TrackRefitter2 = process.TrackRefitter1.clone(
 process.source = cms.Source("PoolSource",
     secondaryFileNames = cms.untracked.vstring(),
     fileNames = cms.untracked.vstring(
-            ${input},
+            [${input}],
     ),
 )
 process.maxEvents = cms.untracked.PSet(

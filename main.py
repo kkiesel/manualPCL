@@ -195,7 +195,7 @@ def writeExecutable(name, pyCfg, additional=[]):
     os.system("chmod +x {}".format(name))
 
 def writeDBmetaFile(run):
-    with open("TkAlignment.txt") as f:
+    with open("TkAlignment.txt", "w") as f:
         f.write("""
 {
     "destinationDatabase": "oracle://cms_orcon_prod/CMS_CONDITIONS",

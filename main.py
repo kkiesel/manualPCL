@@ -186,12 +186,12 @@ def triggerUpdate(fname):
         if val < maxMoveCut and err < maxErrCut and val > cut and err and val/err > sigCut: update = True
     return update
 
-def writeExecutable(name, pyCfg):
+def writeExecutable(name, pyCfg, additional=[]):
     with open(name, "w") as f:
         f.write( "\n".join( ["#!/bin/sh",
             "cd {} && eval `scram runtime -sh`".format(settings.cmsswBase),
-            "cd {} && cmsRun y\n".format(pyCfg, os.path.abspath("."))
-            ]))
+            "cd {} && cmsRun {}\n".format(os.path.abspath("."), pyCfg)
+            ]+additional))
     os.system("chmod +x {}".format(name))
 
 def writeDBmetaFile(run):

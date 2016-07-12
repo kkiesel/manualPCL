@@ -73,8 +73,8 @@ process.prefer_conditionsInTrackerAlignmentErrorRcd = cms.ESPrefer("PoolDBESSour
 #process.conditionsInSiStripBackPlaneCorrectionRcd = CalibTracker.Configuration.Common.PoolDBESSource_cfi.poolDBESSource.clone(
 #     connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS'),
 #     toGet = cms.VPSet(
-#     cms.PSet(
-#         record = cms.string('SiStripBackPlaneCorrectionRcd'),
+#         cms.PSet(
+#             record = cms.string('SiStripBackPlaneCorrectionRcd'),
 #             tag = cms.string('SiStripBackPlaneCorrection_deco_GR10_v4_offline'),
 #             label = cms.untracked.string('deconvolution')
 #             )
@@ -87,8 +87,8 @@ process.prefer_conditionsInTrackerAlignmentErrorRcd = cms.ESPrefer("PoolDBESSour
 #process.conditionsInSiStripLorentzAngleRcd = CalibTracker.Configuration.Common.PoolDBESSource_cfi.poolDBESSource.clone(
 #     connect = cms.string('frontier://FrontierProd/CMS_CONDITIONS'),
 #     toGet = cms.VPSet(
-#     cms.PSet(
-#         record = cms.string('SiStripLorentzAngleRcd'),
+#         cms.PSet(
+#             record = cms.string('SiStripLorentzAngleRcd'),
 #             tag = cms.string('SiStripLorentzAngleDeco_v3_offline'),
 #             label = cms.untracked.string('deconvolution')
 #             )
@@ -96,7 +96,6 @@ process.prefer_conditionsInTrackerAlignmentErrorRcd = cms.ESPrefer("PoolDBESSour
 #     )
 
 #process.prefer_conditionsInSiStripLorentzAngleRcd = cms.ESPrefer("PoolDBESSource", "conditionsInSiStripLorentzAngleRcd")
-
 
 #process.newPixelTemplates = CalibTracker.Configuration.Common.PoolDBESSource_cfi.poolDBESSource.clone(
 #     toGet = cms.VPSet(
@@ -117,8 +116,6 @@ process.prefer_conditionsInTrackerAlignmentErrorRcd = cms.ESPrefer("PoolDBESSour
 #             connect = cms.untracked.string("sqlite_file:/afs/cern.ch/cms/CAF/CMSALCA/ALCA_TRACKERALIGN2/HIP/cayou/CMSSW_7_4_6_patch5/src/Alignment/HIPAlignmentAlgorithm/hp1400/alignments_iter20.db")
 #             )
 #    )
-
-##########################################################################
 
 magnetOn = ${magneticFieldOn}
 cosmics = ${cosmics}
@@ -266,15 +263,13 @@ process.TrackRefitter2 = process.TrackRefitter1.clone(
     )
 
 process.source = cms.Source("PoolSource",
-        skipEvents = cms.untracked.uint32(0),
-        fileNames = cms.untracked.vstring(
+    skipEvents = cms.untracked.uint32(0),
+    fileNames = cms.untracked.vstring(
             ${input},
     ),
     # Wait till Strip Tracker Power Supplies provide nominal high voltages at the beginning of a fill
     lumisToSkip = cms.untracked.VLuminosityBlockRange('${run}:1-${run}:20'),
 )
-
-
 process.maxEvents = cms.untracked.PSet(
     # Reduce run time, especially for HI runs
     input = cms.untracked.int32(20000)

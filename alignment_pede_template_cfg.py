@@ -102,13 +102,14 @@ process.prefer_conditionsInTrackerAlignmentErrorRcd = cms.ESPrefer("PoolDBESSour
 #         cms.PSet(
 #            record = cms.string('SiPixelTemplateDBObjectRcd'),
 #            connect = cms.untracked.string("sqlite_file:/afs/cern.ch/user/d/dkotlins/public/CMSSW/DB/310815/SiPixelTemplateDBObject_38T_2015_v3.db"),
-#             tag = cms.string('SiPixelTemplateDBObject38Tv10')
-#             )
+#            tag = cms.string('SiPixelTemplateDBObject38Tv10')
+#            )
 #         )
 #     )
 
 #process.prefer_conditionsInSiPixelTemplateDBObjectRcd = cms.ESPrefer("PoolDBESSource", "newPixelTemplates")
 
+#-- Load Local Alignment Object
 #process.GlobalTag.toGet = cms.VPSet(
 #    cms.PSet(record = cms.string("TrackerAlignmentRcd"),
 #             tag = cms.string("Alignments"),
@@ -275,12 +276,11 @@ process.TrackRefitter2 = process.TrackRefitter1.clone(
 #    TTRHBuilder = 'WithTrackAngle'
     )
 
-
 process.source = cms.Source("PoolSource",
     secondaryFileNames = cms.untracked.vstring(),
     fileNames = cms.untracked.vstring(
-            '${input}',
-                ),
+            ${input},
+    ),
 )
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1)
@@ -288,7 +288,6 @@ process.maxEvents = cms.untracked.PSet(
 
 #process.dump = cms.EDAnalyzer("EventContentAnalyzer")
 #process.p  = cms.Path(process.dump)
-
 
 if not cosmics:
     process.p = cms.Path(process.HighPuritySelector

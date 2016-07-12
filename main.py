@@ -252,7 +252,8 @@ if __name__ == "__main__":
         jobids.append( " ended({}) ".format(output.split("<")[1].split(">")[0]))
         os.chdir("..")
 
-    writeExecutable("executable_pede.sh", "alignment_pede_cfg.py")
+    writeExecutable("executable_pede.sh", "alignment_pede_cfg.py", ["cd .. && python cleanUp.py {} \n".format(run)])
+    writeDBmetaFile(run)
     copyTemplate("../alignment_pede_template_cfg.py","alignment_pede_cfg.py", \
         {
               "globalTag": settings.globalTag,
@@ -262,24 +263,9 @@ if __name__ == "__main__":
               "input": "\"{}\"".format(filenames[0]),
         })
 
-
     command = "bsub -q cmsexpress -o output_pede.txt -e error_pede.txt -J Pede_2016 -w \"" \
       + "&&".join(jobids) \
       + "\" executable_pede.sh"
     subprocess.check_output([command], shell=True)
-    txtToHist("millepede.res", "pede.dump", "Run{}.root".format(run))
-
-    writeDBmetaFile(run)
-    if triggerUpdate("millepede.res"):
-        if settings.mail:
-            sendMail(settings.mail, "Upload conditions", "Please upload conditions of Run {}".format(run))
-        #subprocess.call(["uploadConditions.py", "TkAlignment.db"])
-
     os.chdir("..")
-
-    cleanUp(run)
-
-    if settings.mail:
-        sendMail(settings.mail, "New Prompt Alignment Update", "New Alignment Updated for Run {}".format(run))
-
     log('Job Finished')

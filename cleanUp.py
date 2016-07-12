@@ -17,13 +17,6 @@ if __name__ == "__main__":
         if settings.mail:
             sendMail(settings.mail, "Upload conditions", "Please upload conditions of Run {}".format(run))
         #subprocess.call(["uploadConditions.py", "TkAlignment.db"])
-
     os.chdir("..")
-
-    log("clean up")
+    log("Clean up")
     cleanUp(run)
-
-    if settings.mail:
-        sendMail(settings.mail, "New Prompt Alignment Update", "New Alignment Updated for Run {}".format(run))
-
-    log('Job Finished')

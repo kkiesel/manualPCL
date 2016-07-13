@@ -13,7 +13,7 @@ class settings:
 
     #user config
     mail = "kiesel@cern.ch" # empty if no mail wished
-    pubDir = "/afs/cern.ch/user/k/kiesel/public/manualPCL"
+    pubDir = "/afs/cern.ch/user/k/kiesel/public/manualPCLforReReco"
     cmsswBase = "/cvmfs/cms.cern.ch/slc6_amd64_gcc530/cms/cmssw/CMSSW_8_0_12"
 
     #PCL config

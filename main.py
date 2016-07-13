@@ -8,7 +8,7 @@ class settings:
     cosmics = False
 
     #data config
-    dataset = "/StreamExpress/Run2016D-TkAlMinBias-Express-v2/ALCARECO"
+    dataset = "/StreamExpress/Run2016C-TkAlMinBias-Express-v2/ALCARECO"
     minNumberEvents = 20000
 
     #user config
@@ -188,7 +188,7 @@ def writeDBmetaFile(run):
 {
     "destinationDatabase": "oracle://cms_orcon_prod/CMS_CONDITIONS",
     "destinationTags": {
-        "TrackerAlignment_v16_offline" : {}
+        "TrackerAlignment_v17_offline" : {}
     },
     "inputTag": "testTag",
     "since": %s,

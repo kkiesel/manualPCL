@@ -68,7 +68,7 @@ def getFileNames(run, dataset):
     return [f for f in out.split("\n") if f]
 
 def checkMagneticFieldSetting(run, info):
-    bfield = info["magneticfield"]
+    bfield = float(info["magneticfield"])
     if settings.magnetOn and bfield < 3.7 or not settings.magnetOn and bfield > 0.25:
         msg = "\"WARNING: Mismatch between setting of the magnetic field ({}) and the actual field in this run ({})\"".format("on" if settings.magnetOn else "off", bfield)
         log(msg)

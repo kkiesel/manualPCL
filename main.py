@@ -8,7 +8,7 @@ class settings:
     cosmics = False
 
     #data config
-    dataset = "/StreamExpress/Run2016C-TkAlMinBias-Express-v2/ALCARECO"
+    datasets = "/StreamExpress/Run2016C-TkAlMinBias-Express-v2/ALCARECO", "/StreamExpress/Run2016D-TkAlMinBias-Express-v2/ALCARECO"
     minNumberEvents = 20000
 
     #user config
@@ -97,23 +97,26 @@ def writeConfig(cfg):
     with open(settings.runInfoConfigName, 'w') as configfile:
         cfg.write(configfile)
 
-def updateRunInfo():
-    for run in getAllRuns(settings.dataset):
-        runInfo = readConfig()
-        if not runInfo.has_section(run):
-            runInfo.add_section(run)
-        if not runInfo.has_option(run, "nevents"):
-            runInfo.set(run, "nevents", getNEvents(run, settings.dataset))
-        if not runInfo.has_option(run, "magneticfield"):
-            runInfo.set(run, "magneticfield", getField(run))
-        if not runInfo.has_option(run, "streamdone") or not runInfo.getboolean(run, "streamdone"):
-            runInfo.set(run, "streamdone", isStreamDone(run))
-        if not runInfo.has_option(run, "endtime") or not runInfo.get(run, "endtime"):
-            runInfo.set(run, "endtime", getRunEndTime(run))
-        writeConfig(runInfo)
+def updateRunInfo(datasets):
+    for dataset in datasets:
+        for run in getAllRuns(dataset):
+            runInfo = readConfig()
+            if not runInfo.has_section(run):
+                runInfo.add_section(run)
+            if not runInfo.has_option(run, "dataset"):
+                runInfo.set(run, "dataset", dataset)
+            if not runInfo.has_option(run, "nevents"):
+                runInfo.set(run, "nevents", getNEvents(run, dataset))
+            if not runInfo.has_option(run, "magneticfield"):
+                runInfo.set(run, "magneticfield", getField(run))
+            if not runInfo.has_option(run, "streamdone") or not runInfo.getboolean(run, "streamdone"):
+                runInfo.set(run, "streamdone", isStreamDone(run))
+            if not runInfo.has_option(run, "endtime") or not runInfo.get(run, "endtime"):
+                runInfo.set(run, "endtime", getRunEndTime(run))
+            writeConfig(runInfo)
 
 def getRunToProcess():
-    updateRunInfo()
+    updateRunInfo(settings.datasets)
     runInfo = readConfig()
     foundRun = False
     for run in runInfo.sections():
@@ -271,9 +274,9 @@ def cleanUp(run):
 
 if __name__ == "__main__":
     log("Start new job")
-    run, info = getRunToProcess()
+    run, thisRunInfo = getRunToProcess()
     log("Run to process: {}".format(run))
-    checkMagneticFieldSetting(run, info)
+    checkMagneticFieldSetting(run, thisRunInfo)
 
     directory = "Results" + run
     if os.path.exists(directory):
@@ -282,7 +285,7 @@ if __name__ == "__main__":
     os.mkdir(directory)
     os.chdir(directory)
 
-    filenames = getFileNames(run, settings.dataset)
+    filenames = getFileNames(run, thisRunInfo["dataset"])
     jobids = []
     for iChunk, chunk in enumerate(chunks(filenames, 10)):
         # create files

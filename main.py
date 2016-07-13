@@ -120,6 +120,9 @@ def getRunToProcess():
     runInfo = readConfig()
     foundRun = False
     for run in runInfo.sections():
+        if runInfo.get(run, "status") == "started":
+            log("Run {} is not finished yet, exiting".format(run))
+            sys.exit()
         if int(runInfo.get(run, "nevents")) > settings.minNumberEvents and runInfo.getboolean(run, "streamdone") and not runInfo.has_option(run, "status"):
             runInfo.set(run, "status", "started")
             foundRun = True
@@ -216,6 +219,11 @@ def triggerUpdate(fname):
         if val < maxMoveCut and err < maxErrCut and val > cut and err and val/err > sigCut: update = True
     return update
 
+def changeRunInfo(run, option, value):
+    runInfo = readConfig()
+    runInfo.set(run, option, value)
+    writeConfig(runInfo)
+
 def cleanUp(run):
     for f in glob.glob("Results{}/MinBias_2016_*/milleBinary_*.dat".format(run)):
         os.remove(f)
@@ -224,6 +232,7 @@ def cleanUp(run):
     os.system("mv Results{0}/TkAlignment.db Results{0}/Run{0}.root {1}".format(run, resultDir))
     subprocess.call(["tar", "-zcf", "{}/archive.tar.gz".format(resultDir), "Results{}".format(run)])
     os.system("rm -r Results{0}".format(run))
+    changeRunInfo(run, "status", "finished")
 
 if __name__ == "__main__":
     log("Start new job")

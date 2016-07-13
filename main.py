@@ -106,7 +106,7 @@ def updateRunInfo():
             runInfo.set(run, "nevents", getNEvents(run, settings.dataset))
         if not runInfo.has_option(run, "magneticfield"):
             runInfo.set(run, "magneticfield", getField(run))
-        if not runInfo.has_option(run, "streamdone") or not runInfo.get(run, "streamdone"):
+        if not runInfo.has_option(run, "streamdone") or not runInfo.getboolean(run, "streamdone"):
             runInfo.set(run, "streamdone", isStreamDone(run))
         if not runInfo.has_option(run, "endtime") or not runInfo.get(run, "endtime"):
             runInfo.set(run, "endtime", getRunEndTime(run))
@@ -115,11 +115,16 @@ def updateRunInfo():
 def getRunToProcess():
     updateRunInfo()
     runInfo = readConfig()
+    foundRun = False
     for run in runInfo.sections():
-        if runInfo.get(run, "nevents") > minNumberEvents and runInfo.get(run, "streamdone") and not runInfo.has_option(run, "status"):
+        if int(runInfo.get(run, "nevents")) > settings.minNumberEvents and runInfo.getboolean(run, "streamdone") and not runInfo.has_option(run, "status"):
             runInfo.set(run, "status", "started")
+            foundRun = True
             break
     writeConfig(runInfo)
+    if not foundRun:
+        log("No suitable run found")
+        sys.exit()
     return run, runInfo._sections[run]
 
 def writeNumberToFile(name, x):

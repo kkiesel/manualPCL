@@ -52,6 +52,13 @@ process.load("Configuration.Geometry.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.GlobalTag.connect = "frontier://FrontierProd/CMS_CONDITIONS"
 process.GlobalTag.globaltag = "${globalTag}"
+process.GlobalTag.toGet.append(
+    cms.PSet(
+        connect = cms.string("frontier://FrontierProd/CMS_CONDITIONS"),
+        record = cms.string('TrackerAlignmentRcd'),
+        tag = cms.string('TrackerAlignment_v17_offline'),
+        )
+    )
 
 #-- initialize beam spot
 process.load("RecoVertex.BeamSpotProducer.BeamSpot_cfi")

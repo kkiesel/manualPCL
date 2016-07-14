@@ -174,7 +174,7 @@ def txtToHist(inName, inName2, outName):
     out = numpy.genfromtxt(inName, skip_header=1, skip_footer=48)
     for objId, x, x, val, err in out:
         objId = int(objId)
-        hist = objId%10-1
+        hist = int(objId%10-1)
         multiplier = 1e4 if hist in [0,1,2] else 1e6 # unit conversion to 'mu m' and 'mu rad'
         val, err = float(val)*multiplier, float(err)*multiplier
         bin = bins.index(objId/10) + 1
@@ -204,16 +204,24 @@ def txtToHist(inName, inName2, outName):
 
 def triggerUpdate(fname):
     # x, y, z, theta_x, theta_y, theta_z
-    cuts = [ 5e-5, 10e-5, 15e-5, 30e-6, 30e-6, 30e-6]
+    cuts = [ 5e-4, 10e-4, 15e-4, 30e-6, 30e-6, 30e-6]
     # significance cut
     sigCut = 2.5
     # sanity cuts
-    maxMoveCut = 200
-    maxErrCut = 10
-    update = False
+    maxMoveCutPos = 200e-4
+    maxErrCutPos = 10e-4
+    maxMoveCutTheta = 200e-6
+    maxErrCutTheta = 10e-6
     out = numpy.genfromtxt(fname, skip_header=1, skip_footer=48)
     for objInt, x, x, val, err in out:
         varInt = int(objInt%10-1)
+        hist = int(objInt%10-1)
+        if hist in range(3):
+            maxMoveCut = maxMoveCutPos
+            maxErrCut = maxErrCutPos
+        else:
+            maxMoveCut = maxMoveCutTheta
+            maxErrCut = maxErrCutTheta
         cut = cuts[varInt]
         val, err = abs(val), abs(err)
         if val < maxMoveCut and err < maxErrCut and val > cut and err and val/err > sigCut: update = True

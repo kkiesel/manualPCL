@@ -213,6 +213,7 @@ def triggerUpdate(fname):
     maxMoveCutTheta = 200e-6
     maxErrCutTheta = 10e-6
     out = numpy.genfromtxt(fname, skip_header=1, skip_footer=48)
+    update = False
     for objInt, x, x, val, err in out:
         varInt = int(objInt%10-1)
         hist = int(objInt%10-1)

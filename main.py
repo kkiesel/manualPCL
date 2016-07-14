@@ -34,7 +34,7 @@ def sendMail(adress, subject="", body=""):
     os.system("echo \"{}\" | mail -s \"[manualPCL] {}\" {}".format(body, subject, adress))
 
 def log(s):
-    print time.strftime("%Y-%m-%d-%H-%m-%S: ") + s
+    print time.strftime("%Y-%m-%d %H-%m-%S: ") + s
 
 def isStreamDone(run):
     out = subprocess.check_output(["curl", "-k", "-s", "https://cmsweb.cern.ch/t0wmadatasvc/prod/run_stream_done?run={}&stream=Express".format(run)])

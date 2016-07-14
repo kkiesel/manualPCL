@@ -120,7 +120,7 @@ def getRunToProcess():
     runInfo = readConfig()
     foundRun = False
     for run in runInfo.sections():
-        if runInfo.get(run, "status") == "started":
+        if runInfo.has_option(run, "status") and runInfo.get(run, "status") == "started":
             log("Run {} is not finished yet, exiting".format(run))
             sys.exit()
         if int(runInfo.get(run, "nevents")) > settings.minNumberEvents and runInfo.getboolean(run, "streamdone") and not runInfo.has_option(run, "status"):
